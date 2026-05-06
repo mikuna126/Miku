@@ -2,107 +2,66 @@ const fs = require("fs-extra");
 const path = require("path");
 const https = require("https");
 
-module.exports = {
-  config: {
-    name: "help",
-    aliases: ["menu", "commands"],
-    version: "6.2",
-    author: "EryXenX",
-    shortDescription: "Show all commands",
-    longDescription: "Show all commands in clean UI",
-    category: "system",
-    guide: "{pn}help [command name]"
+const categories = {
+  "1": {
+    name: "🎮 الألعاب",
+    categories: ["game", "games", "fun"]
   },
 
-  onStart: async function ({ message, args, prefix }) {
-    const allCommands = global.GoatBot.commands;
+  "2": {
+    name: "🤖 الذكاء الاصطناعي",
+    categories: ["ai"]
+  },
 
-    const fancyFont = (str) =>
-      str.replace(/[A-Za-z]/g, (c) => {
-        const map = {
-          A:"𝐀",B:"𝐁",C:"𝐂",D:"𝐃",E:"𝐄",F:"𝐅",G:"𝐆",H:"𝐇",
-          I:"𝐈",J:"𝐉",K:"𝐊",L:"𝐋",M:"𝐌",N:"𝐍",O:"𝐎",P:"𝐏",
-          Q:"𝐐",R:"𝐑",S:"𝐒",T:"𝐓",U:"𝐔",V:"𝐕",W:"𝐖",X:"𝐗",
-          Y:"𝐘",Z:"𝐙",
-          a:"𝐚",b:"𝐛",c:"𝐜",d:"𝐝",e:"𝐞",f:"𝐟",g:"𝐠",h:"𝐡",
-          i:"𝐢",j:"𝐣",k:"𝐤",l:"𝐥",m:"𝐦",n:"𝐧",o:"𝐨",p:"𝐩",
-          q:"𝐪",r:"𝐫",s:"𝐬",t:"𝐭",u:"𝐮",v:"𝐯",w:"𝐰",x:"𝐱",
-          y:"𝐲",z:"𝐳"
-        };
-        return map[c] || c;
-      });
+  "3": {
+    name: "🌐 السوشيال",
+    categories: ["social", "media"]
+  },
 
-    const categoryFont = (str) =>
-      str.split("").map(c => {
-        const map = {
-          A:"𝙰",B:"𝙱",C:"𝙲",D:"𝙳",E:"𝙴",F:"𝙵",G:"𝙶",H:"𝙷",
-          I:"𝙸",J:"𝙹",K:"𝙺",L:"𝙻",M:"𝙼",N:"𝙽",O:"𝙾",P:"𝙿",
-          Q:"𝚀",R:"𝚁",S:"𝚂",T:"𝚃",U:"𝚄",V:"𝚅",W:"𝚆",X:"𝚇",
-          Y:"𝚈",Z:"𝚉"
-        };
-        return map[c] || c;
-      }).join("");
+  "4": {
+    name: "🛠️ الأدوات",
+    categories: ["utility", "tools", "system"]
+  },
 
-    const cleanCategoryName = (text) => text ? text.toLowerCase() : "others";
+  "5": {
+    name: "👑 الإدارة",
+    categories: ["admin", "moderation"]
+  }
+};
 
-    if (args[0]) {
-      const cmdName = args[0].toLowerCase();
-      const cmd =
-        allCommands.get(cmdName) ||
-        [...allCommands.values()].find(c => c.config.aliases?.includes(cmdName));
+module.exports = {
+  config: {
+    name: "اوامر",
+    aliases: ["menu", "commands"],
+    version: "7.0",
+    author: "EryXenX + ChatGPT",
+    shortDescription: "Interactive help menu",
+    longDescription: "Reply-based category help system",
+    category: "system",
+    guide: "{pn}help"
+  },
 
-      if (!cmd)
-        return message.reply(`❌ Command '${cmdName}' not found!`);
-
-      const usage = typeof cmd.config.guide === "string"
-        ? cmd.config.guide.replace("{pn}", cmd.config.name)
-        : cmd.config.name;
-
-      const infoMsg =
-`╭─ 𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐈𝐍𝐅𝐎
-│ 🧩 ${fancyFont(cmd.config.name)}
-│ 🔗 ${cmd.config.aliases?.join(", ") || "None"}
-│ 📁 ${categoryFont((cmd.config.category || "Others").toUpperCase())}
-│ ⚙️ v${cmd.config.version || "1.0"}
-│ 👑 ${cmd.config.author || "Unknown"}
-│ 📝 ${(cmd.config.longDescription || cmd.config.shortDescription || "No description").slice(0, 40)}
-│ 🚀 ${prefix}${usage}
-╰────────────`;
-
-      return message.reply(infoMsg);
-    }
-
-    const categories = {};
-
-    for (const [name, cmd] of allCommands) {
-      const cat = cleanCategoryName(cmd.config.category);
-      if (!categories[cat]) categories[cat] = [];
-      categories[cat].push(name);
-    }
-
-    const formatCommands = (cmds) =>
-      cmds.sort().map(c => `• ${fancyFont(c)}`).join("\n");
+  onStart: async function ({ message, event }) {
 
     let msg =
-`╭─ 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒
-│ 🔧 ${prefix}
-│ 📊 ${allCommands.size} commands
-╰────────────\n`;
-
-    for (const cat of Object.keys(categories)) {
-      msg += `\n${categoryFont(cat.toUpperCase())}\n`;
-      msg += formatCommands(categories[cat]) + "\n";
-    }
-
-    msg += `\nUse: ${prefix}help <command>`;
+`╭──『 📂 الأقسام 』
+│
+│ 1️⃣ الألعاب
+│ 2️⃣ الذكاء الاصطناعي
+│ 3️⃣ السوشيال
+│ 4️⃣ الأدوات
+│ 5️⃣ الإدارة
+│
+╰─↳ رد برقم القسم`;
 
     const gifURLs = [
-      "https://i.imgur.com/Xw6JTfn.gif",
-      "https://i.imgur.com/mW0yjZb.gif",
-      "https://i.imgur.com/KQBcxOV.gif"
+      "https://i.postimg.cc/j2wZCJmT/e300540e498bf2d7c3270d6e5ab72dc2.jpg",
+      "https://i.postimg.cc/j2wZCJmT/e300540e498bf2d7c3270d6e5ab72dc2.jpg",
+      "https://i.postimg.cc/j2wZCJmT/e300540e498bf2d7c3270d6e5ab72dc2.jpg"
     ];
 
     const randomGifURL = gifURLs[Math.floor(Math.random() * gifURLs.length)];
+
     const gifFolder = path.join(__dirname, "cache");
 
     if (!fs.existsSync(gifFolder))
@@ -114,23 +73,73 @@ module.exports = {
     if (!fs.existsSync(gifPath))
       await downloadGif(randomGifURL, gifPath);
 
-    return message.reply({
+    const sentMsg = await message.reply({
       body: msg,
       attachment: fs.createReadStream(gifPath)
     });
+
+    global.GoatBot.onReply.set(sentMsg.messageID, {
+      commandName: this.config.name,
+      author: event.senderID
+    });
+  },
+
+  onReply: async function ({ message, Reply, event }) {
+
+    if (event.senderID != Reply.author)
+      return;
+
+    const input = event.body.trim();
+
+    if (!categories[input])
+      return message.reply("❌ هذا القسم غير موجود");
+
+    const allCommands = global.GoatBot.commands;
+
+    const selected = categories[input];
+
+    let cmds = [];
+
+    for (const [name, cmd] of allCommands) {
+
+      const cat = (cmd.config.category || "").toLowerCase();
+
+      if (selected.categories.includes(cat)) {
+        cmds.push(name);
+      }
+    }
+
+    cmds = [...new Set(cmds)];
+
+    if (!cmds.length)
+      return message.reply("❌ لا توجد أوامر داخل هذا القسم");
+
+    let msg =
+`╭──『 ${selected.name} 』
+│
+${cmds.sort().map(c => `│ • ${c}`).join("\n")}
+│
+╰────────────`;
+
+    return message.reply(msg);
   }
 };
 
 function downloadGif(url, dest) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
+
     https.get(url, (res) => {
+
       if (res.statusCode !== 200) {
         fs.unlink(dest, () => {});
         return reject();
       }
+
       res.pipe(file);
+
       file.on("finish", () => file.close(resolve));
+
     }).on("error", (err) => {
       fs.unlink(dest, () => {});
       reject(err);
