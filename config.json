@@ -13,7 +13,7 @@
     "language": "en",
     "notesLanguage": "change language using ISO 639-1 code",
     "nickNameBot": "—͞ 𝐐𝐔𝐄𝐄𝐍 🎀❤️‍🩹",
-    "prefix": "/",
+    "prefix": ".",
     "adminOnly": {
         "enable": false,
         "ignoreCommand": []
@@ -35,8 +35,8 @@
     "whiteListMode": {
         "enable": false,
         "whiteListIds": [
-            "100083039411474",
-            "100063840894133"
+            "61577177982938",
+            "61577177982938"
         ],
         "notes": "If enabled, only IDs in whiteListIds can use the bot."
     },
