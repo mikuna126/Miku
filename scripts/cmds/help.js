@@ -70,9 +70,9 @@ module.exports = {
     msg += `\n\n✦ أرسل رقم القسم لعرض أوامره`;
 
     const gifURLs = [
-      "https://i.imgur.com/Xw6JTfn.gif",
-      "https://i.imgur.com/mW0yjZb.gif",
-      "https://i.imgur.com/KQBcxOV.gif"
+      "https://i.postimg.cc/LhF9szWx/IMG-20260508-005257.jpg",
+      "https://i.postimg.cc/LhF9szWx/IMG-20260508-005257.jpg",
+      "https://i.postimg.cc/mZz7tBqp/74cfd3f7445a59c5e900885a5eeccb32.jpg"
     ];
 
     const randomGifURL = gifURLs[Math.floor(Math.random() * gifURLs.length)];
