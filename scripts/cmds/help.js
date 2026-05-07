@@ -6,10 +6,10 @@ module.exports = {
   config: {
     name: "اوامر",
     aliases: ["menu", "commands"],
-    version: "8.0",
+    version: "9.0",
     author: "EryXenX + ChatGPT",
     shortDescription: "قائمة الأوامر",
-    longDescription: "نظام أوامر ديناميكي حسب الأقسام",
+    longDescription: "نظام أوامر عربي منظم",
     category: "system",
     guide: "{pn}اوامر"
   },
@@ -18,57 +18,56 @@ module.exports = {
 
     const allCommands = global.GoatBot.commands;
 
-    const categories = {};
+    const categories = {
+      "🤖 الذكاء الاصطناعي": [],
+      "🛠 الأدوات": [],
+      "🎮 الترفيه": [],
+      "👥 الإدارة": [],
+      "⚙️ النظام": []
+    };
 
     for (const [name, cmd] of allCommands) {
 
-      const cat = (cmd.config.category || "others").toLowerCase();
+      const cat = (cmd.config.category || "").toLowerCase();
 
-      if (!categories[cat])
-        categories[cat] = [];
+      if (
+        ["ai", "ai-image"].includes(cat)
+      ) {
+        categories["🤖 الذكاء الاصطناعي"].push(name);
+      }
 
-      categories[cat].push(name);
+      else if (
+        ["utility", "tools", "software", "info", "information", "wiki"].includes(cat)
+      ) {
+        categories["🛠 الأدوات"].push(name);
+      }
+
+      else if (
+        ["fun", "anime", "game", "love", "media", "image"].includes(cat)
+      ) {
+        categories["🎮 الترفيه"].push(name);
+      }
+
+      else if (
+        ["admin", "box", "box chat", "contacts admin", "rank", "economy", "market"].includes(cat)
+      ) {
+        categories["👥 الإدارة"].push(name);
+      }
+
+      else {
+        categories["⚙️ النظام"].push(name);
+      }
     }
 
     const categoryList = Object.keys(categories);
 
-    const categoryTranslations = {
-      ai: "🤖 الذكاء الاصطناعي",
-      utility: "🛠 الأدوات",
-      "box chat": "💬 المجموعة",
-      system: "⚙️ النظام",
-      owner: "👑 المطور",
-      anime: "🎌 الأنمي",
-      media: "🎥 الوسائط",
-      software: "💻 البرامج",
-      economy: "💰 الاقتصاد",
-      fun: "🎮 الترفيه",
-      "contacts admin": "📞 تواصل الإدارة",
-      admin: "🛡 الإدارة",
-      "ai-image": "🖼 صور الذكاء الاصطناعي",
-      rank: "🏆 الرتب",
-      image: "📷 الصور",
-      wiki: "📚 ويكيبيديا",
-      game: "🎲 الألعاب",
-      market: "🛒 السوق",
-      box: "📦 الصندوق",
-      info: "ℹ️ المعلومات",
-      tools: "🧰 الأدوات",
-      other: "📌 أخرى",
-      love: "❤️ الحب",
-      information: "📖 معلومات",
-      config: "⚙️ الإعدادات"
-    };
-
-    let msg =
-`╭──『 📂 الأقسام 』
-│`;
+    let msg = `📂 | قائمة الأقسام\n━━━━━━━━━━━━━━`;
 
     categoryList.forEach((cat, index) => {
-      msg += `\n│ ${index + 1}️⃣ ${categoryTranslations[cat] || cat}`;
+      msg += `\n${index + 1}. ${cat}`;
     });
 
-    msg += `\n│\n╰─↳ رد برقم القسم`;
+    msg += `\n\n✦ أرسل رقم القسم لعرض أوامره`;
 
     const gifURLs = [
       "https://i.imgur.com/Xw6JTfn.gif",
@@ -97,8 +96,7 @@ module.exports = {
     global.GoatBot.onReply.set(sentMsg.messageID, {
       commandName: this.config.name,
       author: event.senderID,
-      categories,
-      categoryTranslations
+      categories
     });
   },
 
@@ -122,11 +120,12 @@ module.exports = {
     const commands = Reply.categories[selectedCategory];
 
     let msg =
-`╭──『 ${Reply.categoryTranslations[selectedCategory] || selectedCategory} 』
-│
-${commands.sort().map(c => `│ • ${c}`).join("\n")}
-│
-╰────────────`;
+`📂 | ${selectedCategory}
+━━━━━━━━━━━━━━
+
+${commands.sort().map(c => `• ${c}`).join("\n")}
+
+━━━━━━━━━━━━━━`;
 
     return message.reply(msg);
   }
