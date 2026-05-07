@@ -8,10 +8,10 @@ module.exports = {
     aliases: ["menu", "commands"],
     version: "8.0",
     author: "EryXenX + ChatGPT",
-    shortDescription: "Dynamic help menu",
-    longDescription: "Reply-based dynamic category help system",
+    shortDescription: "قائمة الأوامر",
+    longDescription: "نظام أوامر ديناميكي حسب الأقسام",
     category: "system",
-    guide: "{pn}help"
+    guide: "{pn}اوامر"
   },
 
   onStart: async function ({ message, event }) {
@@ -32,12 +32,40 @@ module.exports = {
 
     const categoryList = Object.keys(categories);
 
+    const categoryTranslations = {
+      ai: "🤖 الذكاء الاصطناعي",
+      utility: "🛠 الأدوات",
+      "box chat": "💬 المجموعة",
+      system: "⚙️ النظام",
+      owner: "👑 المطور",
+      anime: "🎌 الأنمي",
+      media: "🎥 الوسائط",
+      software: "💻 البرامج",
+      economy: "💰 الاقتصاد",
+      fun: "🎮 الترفيه",
+      "contacts admin": "📞 تواصل الإدارة",
+      admin: "🛡 الإدارة",
+      "ai-image": "🖼 صور الذكاء الاصطناعي",
+      rank: "🏆 الرتب",
+      image: "📷 الصور",
+      wiki: "📚 ويكيبيديا",
+      game: "🎲 الألعاب",
+      market: "🛒 السوق",
+      box: "📦 الصندوق",
+      info: "ℹ️ المعلومات",
+      tools: "🧰 الأدوات",
+      other: "📌 أخرى",
+      love: "❤️ الحب",
+      information: "📖 معلومات",
+      config: "⚙️ الإعدادات"
+    };
+
     let msg =
 `╭──『 📂 الأقسام 』
 │`;
 
     categoryList.forEach((cat, index) => {
-      msg += `\n│ ${index + 1}️⃣ ${cat}`;
+      msg += `\n│ ${index + 1}️⃣ ${categoryTranslations[cat] || cat}`;
     });
 
     msg += `\n│\n╰─↳ رد برقم القسم`;
@@ -69,7 +97,8 @@ module.exports = {
     global.GoatBot.onReply.set(sentMsg.messageID, {
       commandName: this.config.name,
       author: event.senderID,
-      categories
+      categories,
+      categoryTranslations
     });
   },
 
@@ -93,7 +122,7 @@ module.exports = {
     const commands = Reply.categories[selectedCategory];
 
     let msg =
-`╭──『 ${selectedCategory.toUpperCase()} 』
+`╭──『 ${Reply.categoryTranslations[selectedCategory] || selectedCategory} 』
 │
 ${commands.sort().map(c => `│ • ${c}`).join("\n")}
 │
