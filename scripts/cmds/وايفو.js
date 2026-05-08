@@ -4,12 +4,12 @@ module.exports = {
 	config: {
 		name: "وايفو",
 		aliases: ["waifu"],
-		version: "1.0",
-		author: "ChatGPT",
+		version: "2.0",
+		author: "JIROU",
 		countDown: 5,
 		role: 0,
-		shortDescription: "صور وايفو عشوائية",
-		longDescription: "إرسال صور أنمي وايفو عشوائية",
+		shortDescription: "صور وايفو",
+		longDescription: "إرسال صور أنمي عشوائية",
 		category: "🎌 الأنمي",
 		guide: "{pn}"
 	},
@@ -20,9 +20,9 @@ module.exports = {
 
 			const apis = [
 
-				"https://api.waifu.pics/sfw/waifu",
+				"https://api.waifu.im/search",
 
-				"https://api.waifu.pics/sfw/neko"
+				"https://nekos.best/api/v2/waifu"
 
 			];
 
@@ -32,17 +32,28 @@ module.exports = {
 			const res =
 				await axios.get(randomApi);
 
-			const imageUrl =
-				res.data.url;
+			let imageUrl;
 
-			const img =
+			if (randomApi.includes("waifu.im")) {
+
+				imageUrl =
+					res.data.images[0].url;
+
+			} else {
+
+				imageUrl =
+					res.data.results[0].url;
+			}
+
+			const img = (
 				await axios.get(imageUrl, {
 					responseType: "stream"
-				});
+				})
+			).data;
 
 			return message.reply({
 				body: "🎌 | وايفو عشوائية",
-				attachment: img.data
+				attachment: img
 			});
 
 		} catch (e) {
@@ -50,7 +61,7 @@ module.exports = {
 			console.log(e);
 
 			return message.reply(
-				"❌ | حدث خطأ أثناء جلب الصورة"
+				"❌ | فشل جلب صورة الوايفو"
 			);
 		}
 	}
