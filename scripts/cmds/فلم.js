@@ -4,12 +4,12 @@ module.exports = {
 	config: {
 		name: "فلم",
 		aliases: ["movie", "film"],
-		version: "1.0",
-		author: "ChatGPT",
+		version: "4.0",
+		author: "JIROU",
 		countDown: 5,
 		role: 0,
 		shortDescription: "اقتراح فلم",
-		longDescription: "يقترح لك فلم عشوائي مع صورة ووصف عربي",
+		longDescription: "يقترح فلم عشوائي مع صورة ومعلومات",
 		category: "🎬 الترفيه",
 		guide: "{pn}"
 	},
@@ -18,49 +18,59 @@ module.exports = {
 
 		try {
 
-			const pages = [1, 2, 3, 4, 5];
-			const randomPage =
-				pages[Math.floor(Math.random() * pages.length)];
+			const movies = [
 
-			const res = await axios.get(
-				`https://api.themoviedb.org/3/movie/top_rated?api_key=1fbbcf1f9b9dfb9c7c2f0f3e54f9b233&language=en-US&page=${randomPage}`
-			);
+				"Interstellar",
+				"Inception",
+				"Fight Club",
+				"Se7en",
+				"The Dark Knight",
+				"Joker",
+				"The Shawshank Redemption",
+				"Whiplash",
+				"Parasite",
+				"Gladiator",
+				"The Godfather",
+				"American Psycho",
+				"The Pianist",
+				"Inglourious Basterds",
+				"Shutter Island",
+				"Blade Runner 2049",
+				"Prisoners",
+				"Taxi Driver",
+				"Scarface",
+				"The Prestige",
+				"Django Unchained",
+				"Oldboy",
+				"No Country for Old Men",
+				"Drive",
+				"1917",
+				"Oppenheimer",
+				"Memento",
+				"The Green Mile",
+				"The Silence of the Lambs",
+				"Nightcrawler",
+				"Gone Girl",
+				"Tenet",
+				"The Wolf of Wall Street",
+				"Arrival",
+				"La La Land",
+				"The Truman Show",
+				"Her",
+				"The Matrix",
+				"Pulp Fiction",
+				"John Wick"
 
-			const movies = res.data.results;
+			];
 
-			const movie =
+			const randomMovie =
 				movies[Math.floor(Math.random() * movies.length)];
 
-			const title =
-				movie.title || "غير معروف";
-
-			const rating =
-				movie.vote_average || "غير معروف";
-
-			const date =
-				movie.release_date || "غير معروف";
-
-			let desc =
-				movie.overview || "لا يوجد وصف";
-
-			desc = desc.substring(0, 400);
-
-			const translate = await axios.get(
-				`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=${encodeURIComponent(desc)}`
+			const res = await axios.get(
+				`https://api.popcat.xyz/imdb?q=${encodeURIComponent(randomMovie)}`
 			);
 
-			desc = translate.data[0]
-				.map(t => t[0])
-				.join("");
-
-			const image =
-				`https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-
-			const img = (
-				await axios.get(image, {
-					responseType: "stream"
-				})
-			).data;
+			const data = res.data;
 
 			const msg =
 `🎬 | اقتراح فلم
@@ -68,20 +78,32 @@ module.exports = {
 ━━━━━━━━━━━━━━
 
 🎥 الاسم:
-${title}
+${data.title || randomMovie}
 
 ⭐ التقييم:
-${rating}
+${data.rating || "غير معروف"}
 
-📅 سنة الإصدار:
-${date}
+📅 السنة:
+${data.year || "غير معروف"}
+
+🎭 النوع:
+${data.genre || "غير معروف"}
+
+🎬 الممثلين:
+${data.actors || "غير معروف"}
 
 📝 القصة:
-${desc}
+${data.plot || "لا يوجد وصف"}
 
 ━━━━━━━━━━━━━━
 
 🍿 مشاهدة ممتعة`;
+
+			const img = (
+				await axios.get(data.poster, {
+					responseType: "stream"
+				})
+			).data;
 
 			await message.reply({
 				body: msg,
