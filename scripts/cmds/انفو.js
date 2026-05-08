@@ -1,12 +1,11 @@
 const os = require("os");
-const axios = require("axios");
 
 module.exports = {
 	config: {
 		name: "انفو",
 		aliases: ["info", "botinfo"],
 		version: "2.0",
-		author: "ChatGPT",
+		author: "JIROU",
 		countDown: 5,
 		role: 0,
 		shortDescription: "معلومات البوت",
@@ -17,11 +16,7 @@ module.exports = {
 
 	onStart: async function ({ message }) {
 
-		const totalCommands =
-			global.GoatBot?.commands?.size || 0;
-
-		const uptime =
-			process.uptime();
+		const uptime = process.uptime();
 
 		const hours =
 			Math.floor(uptime / 3600);
@@ -38,29 +33,17 @@ module.exports = {
 		const freeMemory =
 			(os.freemem() / 1024 / 1024 / 1024).toFixed(2);
 
-		const botName = "Miku";
-		const developer = "JIROU";
-
-		const imageUrl =
-			"https://i.postimg.cc/yd7r7WnT/be495a9ae2bb6de49ac21e5f83f269b6-webp.webp";
-
-		const img = (
-			await axios.get(imageUrl, {
-				responseType: "stream"
-			})
-		).data;
-
 		const msg =
 `╭──〔 🤖 معلومات البوت 〕──╮
 
 🎀 اسم البوت:
-${botName}
+Miku
 
 👑 المطور:
-${developer}
+JIROU
 
-📦 عدد الأوامر:
-${totalCommands}
+📦 حالة البوت:
+يعمل بنجاح ✅
 
 ⏳ وقت التشغيل:
 ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية
@@ -87,9 +70,6 @@ www.facebook.com/JIROU1X
 
 ╰────────────────╯`;
 
-		await message.reply({
-			body: msg,
-			attachment: img
-		});
+		return message.reply(msg);
 	}
 };
