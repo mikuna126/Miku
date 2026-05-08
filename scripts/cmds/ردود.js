@@ -8,7 +8,7 @@ module.exports = {
 
 	onStart: async () => {},
 
-	onChat: async function ({ event, message }) {
+	onChat: async function ({ event, message, api }) {
 
 		if (!event.body)
 			return;
@@ -39,7 +39,7 @@ module.exports = {
 			},
 
 			{
-				keywords: ["ميكو" "miku"],
+				keywords: ["ميكو", "miku"],
 				reply: "عيونها"
 			},
 
@@ -58,8 +58,9 @@ module.exports = {
 				)
 			) {
 
-				return message.reply(
-					item.reply
+				return api.sendMessage(
+					item.reply,
+					event.threadID
 				);
 			}
 		}
