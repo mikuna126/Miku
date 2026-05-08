@@ -4,13 +4,13 @@ module.exports = {
 	config: {
 		name: "انفو",
 		aliases: ["info", "botinfo"],
-		version: "2.0",
+		version: "1.0",
 		author: "JIROU",
 		countDown: 5,
 		role: 0,
 		shortDescription: "معلومات البوت",
-		longDescription: "عرض معلومات البوت والمطور",
-		category: "⚙️ النظام",
+		longDescription: "عرض معلومات البوت",
+		category: "system",
 		guide: "{pn}"
 	},
 
@@ -18,14 +18,12 @@ module.exports = {
 
 		const uptime = process.uptime();
 
-		const hours =
-			Math.floor(uptime / 3600);
+		const hours = Math.floor(uptime / 3600);
+		const minutes = Math.floor((uptime % 3600) / 60);
+		const seconds = Math.floor(uptime % 60);
 
-		const minutes =
-			Math.floor((uptime % 3600) / 60);
-
-		const seconds =
-			Math.floor(uptime % 60);
+		const totalCommands =
+			global.GoatBot.commands.size;
 
 		const totalMemory =
 			(os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
@@ -33,17 +31,20 @@ module.exports = {
 		const freeMemory =
 			(os.freemem() / 1024 / 1024 / 1024).toFixed(2);
 
-		const msg =
-`╭──〔 🤖 معلومات البوت 〕──╮
+		const botName = "QUEEN";
+		const developer = "JIROU";
+
+		const msg = `
+╭──〔 🤖 معلومات البوت 〕──╮
 
 🎀 اسم البوت:
-Miku
+${botName}
 
 👑 المطور:
-JIROU
+${developer}
 
-📦 حالة البوت:
-يعمل بنجاح ✅
+📦 عدد الأوامر:
+${totalCommands}
 
 ⏳ وقت التشغيل:
 ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية
