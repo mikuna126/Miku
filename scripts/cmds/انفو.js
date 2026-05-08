@@ -18,7 +18,7 @@ module.exports = {
 	onStart: async function ({ message }) {
 
 		const totalCommands =
-			global.GoatBot.commands.size;
+			Object.keys(global.client.commands).length;
 
 		const uptime =
 			process.uptime();
