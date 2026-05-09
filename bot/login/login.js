@@ -68,7 +68,17 @@ function centerText(_0x4f9e3a, _0x5dd3db) {
   const _0x46b4da = " ".repeat(_0x1bd1ec > 0x0 ? _0x1bd1ec : 0x0) + _0x4f9e3a + " ".repeat(_0x55e74f > 0x0 ? _0x55e74f : 0x0);
   console.log(_0x46b4da);
 }
-const titles = [["██████╗  ██████╗  █████╗ ████████╗    ██╗   ██╗██████╗", "██╔════╝ ██╔═══██╗██╔══██╗╚══██╔══╝    ██║   ██║╚════██╗", "██║  ███╗██║   ██║███████║   ██║       ██║   ██║ █████╔╝", "██║   ██║██║   ██║██╔══██║   ██║       ╚██╗ ██╔╝██╔═══╝", "╚██████╔╝╚██████╔╝██║  ██║   ██║        ╚████╔╝ ███████╗", "╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝         ╚═══╝  ╚══════╝"], ["█▀▀ █▀█ ▄▀█ ▀█▀  █▄▄ █▀█ ▀█▀  █░█ ▀█", "█▄█ █▄█ █▀█ ░█░  █▄█ █▄█ ░█░  ▀▄▀ █▄"], ["G O A T B O T  V 2 @" + currentVersion], ["GOATBOT V2"]];
+const titles = [["", " ███╗   ███╗██╗██╗  ██╗██╗   ██╗
+████╗ ████║██║██║ ██╔╝██║   ██║
+██╔████╔██║██║█████╔╝ ██║   ██║
+██║╚██╔╝██║██║██╔═██╗ ██║   ██║
+██║ ╚═╝ ██║██║██║  ██╗╚██████╔╝
+╚═╝     ╚═╝╚═╝╚═╝  ╚═╝ ╚═════╝
+
+╔════════════════════════════╗
+║         MIKU  BOT          ║
+║      CREATED BY JIROU      ║
+╚════════════════════════════╝ ", "], ["M I K U B O T@" + currentVersion], ["MIKU BOT"]];
 const maxWidth = process.stdout.columns;
 const title = maxWidth > 0x3a ? titles[0x0] : maxWidth > 0x24 ? titles[0x1] : maxWidth > 0x1a ? titles[0x2] : titles[0x3];
 console.log(gradient("#f5af19", "#f12711")(createLine(null, true)));
@@ -77,7 +87,7 @@ for (const text of title) {
   const textColor = gradient("#FA8BFF", "#2BD2FF", "#2BFF88")(text);
   centerText(textColor, text.length);
 }
-let subTitle = "GoatBot V2@" + currentVersion + "- Powered by MOHAMMAD AKASH";
+let subTitle = "MIKU BOT" + currentVersion + "- Powered by JIROU";
 const subTitleArray = [];
 if (subTitle.length > maxWidth) {
   while (subTitle.length > maxWidth) {
@@ -98,7 +108,7 @@ for (const t of subTitleArray) {
   const textColor2 = gradient("#9F98E8", '#AFF6CF')(t);
   centerText(textColor2, t.length);
 }
-centerText(gradient('#9F98E8', "#AFF6CF")("Created by NTKhang with ♡"), "Created by NTKhang with ♡".length);
+centerText(gradient('#9F98E8', "#AFF6CF")("Created by NTKhang with ♡"), "Created by JIROU".length);
 centerText(gradient('#9F98E8', '#AFF6CF')("Source code: https://github.com/ntkhang03/Goat-Bot-V2"), "Source code: https://github.com/ntkhang03/Goat-Bot-V2".length);
 centerText(gradient("#f5af19", '#f12711')("ALL VERSIONS NOT RELEASED HERE ARE FAKE"), "ALL VERSIONS NOT RELEASED HERE ARE FAKE".length);
 let widthConsole = process.stdout.columns;
@@ -557,7 +567,7 @@ async function startBot(_0x3cad9e) {
   }
 
   log.info("LOGIN FACEBOOK", getText("login", "currentlyLogged"));
-  log.warn("FCA", "Modified By Mohammad Akash 😈");
+  log.warn("FCA", "Modified By JIROU");
   try {
     var _0x41cca2 = path.join(process.cwd(), "account.txt");
     var _0x11ae53 = fs.readFileSync(_0x41cca2, 'utf8');
