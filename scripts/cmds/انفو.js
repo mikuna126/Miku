@@ -1,4 +1,5 @@
 const os = require("os");
+const axios = require("axios");
 
 module.exports = {
 	config: {
@@ -10,11 +11,11 @@ module.exports = {
 		role: 0,
 		shortDescription: "معلومات البوت",
 		longDescription: "عرض معلومات البوت",
-		category: "system",
+		category: "⚙️ النظام",
 		guide: "{pn}"
 	},
 
-	onStart: async function ({ message }) {
+	onStart: async function ({ message, api }) {
 
 		const uptime = process.uptime();
 
@@ -22,37 +23,36 @@ module.exports = {
 		const minutes = Math.floor((uptime % 3600) / 60);
 		const seconds = Math.floor(uptime % 60);
 
-		const totalCommands =
-			global.GoatBot.commands.size;
+		const totalMemory = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
+		const freeMemory = (os.freemem() / 1024 / 1024 / 1024).toFixed(2);
 
-		const totalMemory =
-			(os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
+		const imageUrl = "https://i.postimg.cc/htBLr0gN/be495a9ae2bb6de49ac21e5f83f269b6-webp.webp";
 
-		const freeMemory =
-			(os.freemem() / 1024 / 1024 / 1024).toFixed(2);
-
-		const botName = "QUEEN";
-		const developer = "JIROU";
+		const img = (await axios.get(imageUrl, {
+			responseType: "stream"
+		})).data;
 
 		const msg = `
-╭──〔 🤖 معلومات البوت 〕──╮
+╭──────────────╮
+│    🤖 معلومات البوت
+╰──────────────╯
 
-🎀 اسم البوت:
-${botName}
+🎀 الاسم:
+MIKU BOT
 
 👑 المطور:
-${developer}
+JIROU
 
 📦 عدد الأوامر:
-${totalCommands}
+${global.GoatBot.commands.size}
 
 ⏳ وقت التشغيل:
 ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية
 
-🖥 نظام التشغيل:
+🖥 النظام:
 ${os.platform()}
 
-⚡ نوع المعالج:
+⚡ المعالج:
 ${os.cpus()[0].model}
 
 💾 الرام الكلية:
@@ -61,16 +61,21 @@ ${totalMemory} GB
 📉 الرام المتاحة:
 ${freeMemory} GB
 
-📅 تاريخ ميلاد المطور:
-19 / 3 / 2007
+🆔 ID البوت:
+${api.getCurrentUserID()}
+
+🔰 البادئة:
+${global.GoatBot.config.prefix}
+
+────────────────
 
 🌐 حساب المطور:
+https://www.facebook.com/JIROU1X
+`;
 
-📘 Facebook:
-www.facebook.com/JIROU1X
-
-╰────────────────╯`;
-
-		return message.reply(msg);
+		return message.reply({
+			body: msg,
+			attachment: img
+		});
 	}
 };
